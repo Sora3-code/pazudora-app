@@ -93,6 +93,7 @@ function handleMove(e) {
 
 // 3. 操作終了
 function handleEnd() {
+    // ... (前半の isDragging 判定などはそのまま) ...
     if (!isDragging) return;
     isDragging = false;
 
@@ -106,21 +107,25 @@ function handleEnd() {
         originalOrbElement = null;
     }
 
-    // 盤面を再描画して確定
     renderBoard();
 
-    // ★ここを追加: マッチング判定を実行
+    // --- ここから変更 ---
     const matches = checkMatches();
     
     if (matches.size > 0) {
-        console.log("マッチしました！数:", matches.size);
-        highlightMatches(matches); // 揃った場所を光らせる（薄くする）
+        // 1. まず揃った場所を光らせる（半透明にする）
+        highlightMatches(matches);
         
-        // ここで将来的に「消す処理」→「落ちる処理」に繋げます
-        // 今回は確認のためにアラートを出してみてもいいかも
-        // setTimeout(() => alert('コンボ発生！'), 100); 
+        // 2. 少し待ってから（0.5秒後）、消して落とす！
+        setTimeout(() => {
+            removeAndDropOrbs(matches);
+            
+            // ※ここに将来「連鎖判定（落ちコン）」の処理が入ります
+            // checkAndProcessChain(); 
+        }, 500);
     }
 }
+
 
 
 // --- 浮いているドロップを作る関数 ---
@@ -209,6 +214,50 @@ function highlightMatches(matchedIndices) {
         }
     });
 }
+
+// --- ★新規: ランダムなドロップの色を1つ返す関数 ---
+function getRandomOrb() {
+    return ORB_TYPES[Math.floor(Math.random() * ORB_TYPES.length)];
+}
+
+// --- ★新規: ドロップを消して、詰めて、補充する関数 ---
+function removeAndDropOrbs(matchedIndices) {
+    // 1. マッチした場所のデータを「空（null）」にする
+    matchedIndices.forEach(index => {
+        boardData[index] = null;
+    });
+
+    // 2. 列ごとに処理を行う（縦に詰めるため）
+    for (let c = 0; c < COLS; c++) {
+        // その列にある「生き残った（nullじゃない）ドロップ」だけを集めるリスト
+        let currentColumnOrbs = [];
+        
+        for (let r = 0; r < ROWS; r++) {
+            let index = r * COLS + c; // 縦のインデックス計算
+            if (boardData[index] !== null) {
+                currentColumnOrbs.push(boardData[index]);
+            }
+        }
+
+        // 3. 足りなくなった数（消えた数）を計算
+        let missingCount = ROWS - currentColumnOrbs.length;
+        
+        // 4. 足りない分だけ、新しいドロップをリストの「先頭（上）」に追加
+        for (let i = 0; i < missingCount; i++) {
+            currentColumnOrbs.unshift(getRandomOrb());
+        }
+
+        // 5. 盤面データ（boardData）に書き戻す
+        for (let r = 0; r < ROWS; r++) {
+            let index = r * COLS + c;
+            boardData[index] = currentColumnOrbs[r];
+        }
+    }
+
+    // 6. 盤面を再描画して見た目を更新！
+    renderBoard();
+}
+
 
 
 initGame();
