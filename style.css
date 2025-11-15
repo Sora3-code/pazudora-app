@@ -1,66 +1,66 @@
 
-        body {
-            background-color: #222;
-            color: white;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-            font-family: sans-serif;
-            touch-action: none; /* スクロール禁止 */
-        }
+body {
+    background-color: #222;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    font-family: sans-serif;
+    touch-action: none; /* スクロール禁止 */
+}
 
-        /* 盤面 (6行5列) */
-        #board {
-            display: grid;
-            grid-template-columns: repeat(6, 1fr); /* 6列 */
-            gap: 4px;
-            background-color: #444;
-            padding: 4px;
-            border-radius: 8px;
-            width: 90vw; /* 画面幅の90% */
-            max-width: 360px; /* 最大幅 */
-            aspect-ratio: 6 / 5; /* 横6:縦5 の比率 */
-            position: relative; /* 座標計算の基準 */
-        }
+/* 盤面 (6行5列) */
+#board {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr); /* 6列 */
+    gap: 4px;
+    background-color: #444;
+    padding: 4px;
+    border-radius: 8px;
+    width: 90vw; /* 画面幅の90% */
+    max-width: 360px; /* 最大幅 */
+    aspect-ratio: 6 / 5; /* 横6:縦5 の比率 */
+    position: relative; /* 座標計算の基準 */
+}
 
-        /* ドロップのスタイル */
-        .orb {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            box-shadow: inset -3px -3px 5px rgba(0,0,0,0.5), inset 3px 3px 5px rgba(255,255,255,0.3);
-            cursor: pointer;
-            transition: transform 0.1s; /* 入れ替わり時のアニメーション */
-            /* ユーザーが選択できないようにする */
-            user-select: none; 
-        }
+/* ドロップのスタイル */
+.orb {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    box-shadow: inset -3px -3px 5px rgba(0,0,0,0.5), inset 3px 3px 5px rgba(255,255,255,0.3);
+    cursor: pointer;
+    transition: transform 0.1s; /* 入れ替わり時のアニメーション */
+    /* ユーザーが選択できないようにする */
+    user-select: none; 
+}
 
-        /* ドラッグ中の「浮いている」ドロップ */
-        .floating-orb {
-            position: absolute;
-            width: 50px; /* JSで調整します */
-            height: 50px;
-            border-radius: 50%;
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
-            z-index: 100; /* 最前面に */
-            pointer-events: none; /* 下の要素のイベントを邪魔しない */
-            opacity: 0.9;
-            transform: translate(-50%, -50%) scale(1.2); /* 指の中心に来るように & 少し大きく */
-        }
+/* ドラッグ中の「浮いている」ドロップ */
+.floating-orb {
+    position: absolute;
+    width: 50px; /* JSで調整します */
+    height: 50px;
+    border-radius: 50%;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+    z-index: 100; /* 最前面に */
+    pointer-events: none; /* 下の要素のイベントを邪魔しない */
+    opacity: 0.9;
+    transform: translate(-50%, -50%) scale(1.2); /* 指の中心に来るように & 少し大きく */
+}
 
-        /* ドロップの色定義 */
-        .orb-fire { background: radial-gradient(circle at 30% 30%, #ff6b6b, #c92a2a); } /* 火 */
-        .orb-water { background: radial-gradient(circle at 30% 30%, #4dabf7, #1864ab); } /* 水 */
-        .orb-wood { background: radial-gradient(circle at 30% 30%, #69db7c, #2b8a3e); } /* 木 */
-        .orb-light { background: radial-gradient(circle at 30% 30%, #ffe066, #f08c00); } /* 光 */
-        .orb-dark { background: radial-gradient(circle at 30% 30%, #b197fc, #5f3dc4); } /* 闇 */
-        .orb-heal { background: radial-gradient(circle at 30% 30%, #ff8787, #e03131); } /* 回復(ピンク) */
+/* ドロップの色定義 */
+.orb-fire { background: radial-gradient(circle at 30% 30%, #ff6b6b, #c92a2a); } /* 火 */
+.orb-water { background: radial-gradient(circle at 30% 30%, #4dabf7, #1864ab); } /* 水 */
+.orb-wood { background: radial-gradient(circle at 30% 30%, #69db7c, #2b8a3e); } /* 木 */
+.orb-light { background: radial-gradient(circle at 30% 30%, #ffe066, #f08c00); } /* 光 */
+.orb-dark { background: radial-gradient(circle at 30% 30%, #b197fc, #5f3dc4); } /* 闇 */
+.orb-heal { background: radial-gradient(circle at 30% 30%, #ff8787, #e03131); } /* 回復(ピンク) */
 
-        /* ドラッグ元の穴を暗くする */
-        .orb-placeholder {
-            opacity: 0.3;
-            transform: scale(0.8);
-        }
+/* ドラッグ元の穴を暗くする */
+.orb-placeholder {
+    opacity: 0.3;
+    transform: scale(0.8);
+}
