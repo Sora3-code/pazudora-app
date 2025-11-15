@@ -34,6 +34,7 @@ let isDragging = false;
 let draggedIndex = -1; // 元々あった場所のインデックス
 let floatingOrb = null; // 浮いているドロップの要素
 let orbSize = 0; // ドロップ1個の幅
+let originalOrbElement = null; // ドラッグ開始時の元のドロップ要素を保持
 
 // --- イベントリスナー設定 (マウス & タッチ対応) ---
 board.addEventListener('mousedown', handleStart);
@@ -84,8 +85,7 @@ function handleMove(e) {
     // elementFromPoint で、座標の下にある要素を取得
     // (floatingOrb は pointer-events: none なので貫通して下の要素が取れる)
     const targetElement = document.elementFromPoint(event.clientX, event.clientY);
-
-    if (targetElement && targetElement.classList.contains('orb')) {
+    if (targetElement && targetElement.classList.contains('orb') && targetElement !== originalOrbElement) {
         const targetIndex = parseInt(targetElement.dataset.index);
 
         // もし「今いる場所(draggedIndex)」と「指の下の場所(targetIndex)」が違うなら
@@ -108,7 +108,12 @@ function handleEnd() {
         floatingOrb = null;
     }
 
-    // 盤面を再描画して、見た目を確定させる
+    if (originalOrbElement) {
+        originalOrbElement.classList.remove('orb-placeholder');
+        originalOrbElement = null;
+    }
+
+    // 盤面を再描画して、見た目とデータが同期
     renderBoard();
 }
 
@@ -124,19 +129,32 @@ function createFloatingOrb(type, x, y) {
 }
 
 // --- 配列の中身を入れ替える関数 ---
-function swapOrbs(indexA, indexB) {
+function swapOrbsVisual(indexA, indexB) {
     // 配列のデータを交換
-    const temp = boardData[indexA];
-    boardData[indexA] = boardData[indexB];
-    boardData[indexB] = temp;
+    const typeA = boardData[indexA];
+    const typeB = boardData[indexB];
+    boardData[indexA] = typeB;
+    boardData[indexB] = typeA;
 
-    // 画面上の見た目も更新（全部再描画すると重いので、DOM操作で入れ替える手もあるが、今回は簡易的に再描画）
-    // ただし、ドラッグ中の「薄くなっているクラス」を維持する必要がある
-    renderBoard();
-    
-    // 現在ドラッグ中の位置（indexBになった）を薄くする
-    const newCurrentOrb = board.children[indexB];
-    newCurrentOrb.classList.add('orb-placeholder');
+    // DOM要素の交換
+    const orbA = board.children[indexA];
+    const orbB = board.children[indexB];
+
+    // まずクラスを入れ替える
+    orbA.className = `orb orb-${typeB}`;
+    // クラスを新しいタイプで上書き
+    orbB.className = `orb orb-${typeA}`;
+    // クラスを新しいタイプで上書き
+
+    // dataset.indexも更新
+    orbA.dataset.index = indexA;
+    orbB.dataset.index = indexB;
+
+    // 現在、ドラッグ中のドロップ（元々indexAにあったもの）の新しい位置indexBをマーク
+    // これが次の draggedIndex になるので、これを薄くする
+    orbB.classList.add('orb-placeholder');
+    orbA.classList.remove('orb-placeholder');
+    // 前のマークを消す
 }
 
 // ゲーム開始
