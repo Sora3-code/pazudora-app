@@ -91,7 +91,6 @@ function handleMove(e) {
     }
 }
 
-
 // 3. 操作終了
 function handleEnd() {
     if (!isDragging) return;
