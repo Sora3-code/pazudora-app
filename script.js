@@ -260,6 +260,35 @@ function removeAndDropOrbs(matchedIndices) {
     renderBoard();
 }
 
+// --- ★新規: 連鎖処理を行う関数（再帰的に呼び出される） ---
+function checkAndProcessChain() {
+    // 1. 揃っているかチェック
+    const matches = checkMatches();
+
+    // 2. 揃っている場所がなければ終了（連鎖ストップ）
+    if (matches.size === 0) {
+        console.log("連鎖終了");
+        // isProcessing = false; // もし操作ロックするならここで解除
+        return;
+    }
+
+    console.log("コンボ発生！数:", matches.size);
+
+    // 3. 揃った場所を光らせる（半透明にする）
+    highlightMatches(matches);
+
+    // 4. 少し待ってから「消して・落として・補充」
+    setTimeout(() => {
+        removeAndDropOrbs(matches);
+
+        // 5. さらに少し待ってから、もう一度自分を呼ぶ（再帰呼び出し）
+        // これにより「落ちてきた後の盤面」でまた1.からチェックされる
+        setTimeout(() => {
+            checkAndProcessChain();
+        }, 500); // 落下アニメーションの時間分待つ
+
+    }, 500); // 光っている時間分待つ
+}
 
 
 initGame();
