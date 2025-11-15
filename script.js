@@ -155,6 +155,7 @@ function swapOrbsVisual(indexA, indexB) {
     orbB.classList.add('orb-placeholder');
     orbA.classList.remove('orb-placeholder');
     // 前のマークを消す
+    orbA.style.transform = `translateX(...)`;
 }
 
 // ゲーム開始
