@@ -109,6 +109,8 @@ function handleEnd() {
 
     renderBoard();
 
+    checkAndprocessChain();
+
     // --- ここから変更 ---
     const matches = checkMatches();
     
