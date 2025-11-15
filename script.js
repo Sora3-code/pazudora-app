@@ -91,6 +91,7 @@ function handleMove(e) {
     }
 }
 
+
 // 3. 操作終了
 function handleEnd() {
     if (!isDragging) return;
@@ -101,15 +102,27 @@ function handleEnd() {
         floatingOrb = null;
     }
 
-    // 元のドロップの薄い表示を元に戻す
     if (originalOrbElement) {
         originalOrbElement.classList.remove('orb-placeholder');
         originalOrbElement = null;
     }
 
-    // 見た目とデータを同期（念のため再描画）
+    // 盤面を再描画して確定
     renderBoard();
+
+    // ★ここを追加: マッチング判定を実行
+    const matches = checkMatches();
+    
+    if (matches.size > 0) {
+        console.log("マッチしました！数:", matches.size);
+        highlightMatches(matches); // 揃った場所を光らせる（薄くする）
+        
+        // ここで将来的に「消す処理」→「落ちる処理」に繋げます
+        // 今回は確認のためにアラートを出してみてもいいかも
+        // setTimeout(() => alert('コンボ発生！'), 100); 
+    }
 }
+
 
 // --- 浮いているドロップを作る関数 ---
 function createFloatingOrb(type, x, y) {
@@ -151,5 +164,52 @@ function swapOrbsVisual(indexA, indexB) {
         originalOrbElement = orbB;
     }
 }
+
+// --- ★新規: マッチング判定関数 ---
+function checkMatches() {
+    const matchedIndices = new Set(); // 重複なくインデックスを保存する箱
+
+    // 横方向のチェック
+    for (let r = 0; r < ROWS; r++) {
+        for (let c = 0; c < COLS - 2; c++) { // 右端2つは始点にならないので -2
+            const i = r * COLS + c;
+            const type = boardData[i];
+            // 右隣、そのまた右隣が同じ色か？
+            if (type === boardData[i + 1] && type === boardData[i + 2]) {
+                matchedIndices.add(i);
+                matchedIndices.add(i + 1);
+                matchedIndices.add(i + 2);
+            }
+        }
+    }
+
+    // 縦方向のチェック
+    for (let c = 0; c < COLS; c++) {
+        for (let r = 0; r < ROWS - 2; r++) { // 下端2つは始点にならないので -2
+            const i = r * COLS + c;
+            const type = boardData[i];
+            // 下、そのまた下が同じ色か？
+            // 縦はインデックスが +COLS ずつ増える
+            if (type === boardData[i + COLS] && type === boardData[i + COLS * 2]) {
+                matchedIndices.add(i);
+                matchedIndices.add(i + COLS);
+                matchedIndices.add(i + COLS * 2);
+            }
+        }
+    }
+
+    return matchedIndices; // 揃った場所のリストを返す
+}
+
+// --- ★新規: マッチしたドロップを目立たせる関数 ---
+function highlightMatches(matchedIndices) {
+    matchedIndices.forEach(index => {
+        const orb = board.children[index];
+        if (orb) {
+            orb.classList.add('orb-match');
+        }
+    });
+}
+
 
 initGame();
