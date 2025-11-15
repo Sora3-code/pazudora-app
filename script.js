@@ -58,6 +58,9 @@ function handleStart(e) {
         isDragging = true;
         draggedIndex = parseInt(target.dataset.index);
 
+        // 元の要素を記録しておく
+        originalOrbElement = target;
+
         // ドロップのサイズを取得 (座標計算用)
         const rect = target.getBoundingClientRect();
         orbSize = rect.width;
@@ -91,7 +94,7 @@ function handleMove(e) {
         // もし「今いる場所(draggedIndex)」と「指の下の場所(targetIndex)」が違うなら
         // 配列の中身を入れ替える（スワップ）
         if (targetIndex !== draggedIndex) {
-            swapOrbs(draggedIndex, targetIndex);
+            swapOrbsVisual(draggedIndex, targetIndex);
             draggedIndex = targetIndex; // 現在位置を更新
         }
     }
@@ -155,6 +158,10 @@ function swapOrbsVisual(indexA, indexB) {
     orbB.classList.add('orb-placeholder');
     orbA.classList.remove('orb-placeholder');
     // 前のマークを消す
+
+    if (originalOrbElement === orbA) {
+        originalOrbElement = orbB;
+    }
 }
 
 // ゲーム開始
