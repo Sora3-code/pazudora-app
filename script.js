@@ -14,6 +14,7 @@ function initGame() {
         boardData.push(randomType);
     }
     renderBoard();
+    setTimeout(checkAndProcessChain, 500);
 }
 
 // --- 盤面を描画する ---
