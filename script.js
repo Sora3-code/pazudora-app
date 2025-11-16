@@ -110,26 +110,8 @@ function handleEnd() {
 
     renderBoard();
 
-    checkAndprocessChain();
-
-    // --- ここから変更 ---
-    const matches = checkMatches();
-    
-    if (matches.size > 0) {
-        // 1. まず揃った場所を光らせる（半透明にする）
-        highlightMatches(matches);
-        
-        // 2. 少し待ってから（0.5秒後）、消して落とす！
-        setTimeout(() => {
-            removeAndDropOrbs(matches);
-            
-            // ※ここに将来「連鎖判定（落ちコン）」の処理が入ります
-            // checkAndProcessChain(); 
-        }, 500);
-    }
+    checkAndProcessChain();
 }
-
-
 
 // --- 浮いているドロップを作る関数 ---
 function createFloatingOrb(type, x, y) {
