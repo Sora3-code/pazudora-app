@@ -57,7 +57,7 @@ body {
 .orb-wood { background: radial-gradient(circle at 30% 30%, #69db7c, #2b8a3e); } /* 木 */
 .orb-light { background: radial-gradient(circle at 30% 30%, #ffe066, #f08c00); } /* 光 */
 .orb-dark { background: radial-gradient(circle at 30% 30%, #b197fc, #5f3dc4); } /* 闇 */
-.orb-heal { background: radial-gradient(circle at 30% 30%, #ff8787, #e03131); } /* 回復(ピンク) */
+.orb-heal { background: radial-gradient(circle at 30% 30%, pink, rgb(250, 180, 192)); } /* 回復(ピンク) */
 
 /* ドラッグ元の穴を暗くする */
 .orb-placeholder {
