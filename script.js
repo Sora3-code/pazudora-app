@@ -226,6 +226,9 @@ function removeAndDropOrbs(matchedIndices) {
 
         // 3. 足りなくなった数（消えた数）を計算
         let missingCount = ROWS - currentColumnOrbs.length;
+
+        // 消した数 * 10 ポイント回復
+        updataHP(matchedIndices.size * 10);
         
         // 4. 足りない分だけ、新しいドロップをリストの「先頭（上）」に追加
         for (let i = 0; i < missingCount; i++) {
@@ -303,3 +306,37 @@ function animateCharacter() {
 
 //アニメーション開始
 animateCharacter();
+
+// --- HP管理システム --- 
+const maxHP = 1000;
+let currentHP = 1000;
+const hpBar = document.getElementById('hp-bar');
+const hpText = document.getElementById('hp-text');
+
+//HPを更新する関数（amount: 回復ならプラス、ダメージならマイナスの値）
+function updataHP(amount) {
+    currentHP += amount;
+
+    //最大・最小値の制限
+    if (currentHP > maxHP) currentHP = maxHP;
+    if (currentHP < 0) currentHP = 0;
+
+    //バーの長さを更新（%）
+    const parcentage = (currentHP / maxHP) * 100;
+    hpBar.style.width = `${parcentage}%`;
+
+    //テキスト更新
+    hpText.textContent = `HP: ${currentHP} / ${maxHP}`;
+
+    //色を変える演出（ピンチになったら赤くする）
+    if (parcentage <= 20) {
+        hpBar.style.backgroundColor = '#ff1744'; // 赤
+    } else if (parcentage <= 50) {
+        hpBar.style.backgroundColor = '#ffea00'; // 黄色
+    } else {
+        hpBar.style.backgroundColor = '#00e676'; // 緑
+    }
+}
+
+// テスト用: ゲーム開始時に少しHPを減らしておく
+updataHP(-800);

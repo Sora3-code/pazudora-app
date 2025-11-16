@@ -19,6 +19,18 @@ body {
     width: 100%;
     height: 250px;
     display: flex;
+    flex-direction: column; /* 縦並びにする */
+    justify-content: center;
+    align-items: center;
+    gap: 20px; /* キャラとHPバーの間隔 */
+}
+
+/* キャラと影の位置関係を保つためのラッパー */
+#char-wrapper {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    display: flex;
     justify-content: center;
     align-items: center;
 }
@@ -40,12 +52,47 @@ body {
 /* 地面の影 */
 #shadow {
     position: absolute;
-    bottom: 40px; /* キャラの少し下 */
+    bottom: 5px; /* 位置を調整（ラッパー基準） */
     width: 80px;
     height: 20px;
     background-color: rgba(0, 0, 0, 0.5);
     border-radius: 50%;
     z-index: 1;
+}
+
+/* --- HPバーのスタイル --- */
+#hp-container {
+    width: 200px;
+    height: 20px;
+    background-color: #333; /* 背景（ダメージを受けた部分の色 */
+    border: 2px solid white;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+#hp-bar {
+    width: 100%; /* 初期状態は満タン */
+    height: 100%;
+    background-color: #00e676; /* HPの色（緑） */
+    transition: width 0.3s ease, background-color 0.3s; /* アニメーション */
+}
+
+#hp-text {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    font-weight: bold;
+    color: white;
+    text-shadow: 1px 1px 2px black;
+    z-index: 2;
 }
 
 /* 盤面 (6行5列) */
