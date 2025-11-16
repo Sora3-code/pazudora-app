@@ -10,6 +10,42 @@ body {
     margin: 0;
     font-family: sans-serif;
     touch-action: none; /* スクロール禁止 */
+    overflow: hidden;
+}
+
+/* --- 新規・キャラクター表示エリア --- */
+#scene {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ふわふわ浮く四角（キャラクター） */
+#character {
+    width: 100px;
+    height: 100px;
+    background-color: #4db6ac;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(77, 182, 172, 0.6);
+    position: relative;
+    z-index: 10; /* 影より手前に */
+    /* 将来的に画像にするなら */
+    /* background-image: url('character.png'); */
+    /* background-size: contain; */
+}
+
+/* 地面の影 */
+#shadow {
+    position: absolute;
+    bottom: 40px; /* キャラの少し下 */
+    width: 80px;
+    height: 20px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    z-index: 1;
 }
 
 /* 盤面 (6行5列) */

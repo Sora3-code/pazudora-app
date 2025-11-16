@@ -275,3 +275,31 @@ function checkAndProcessChain() {
 
 
 initGame();
+
+// --- ふわふわアニメーションの処理 --- 
+const characterElement = document.getElementById('character');
+const shadowElement = document.getElementById('shadow');
+let floatTime = 0;
+
+function animateCharacter() {
+    // 時間を進める
+    floatTime += 0.05;
+
+    // 上下のふわふわ（サイン波）
+    // Math.sin(floatTime)は -1 ～ 1
+    // * 15 で上下 15px の範囲で動く
+    const offsetY = Math.sin(floatTime) * 15;
+    characterElement.style.transform = `translateY(${offsetY}px)`;
+
+    // 影のアニメーション（キャラが上がると小さく薄く、下がると大きく濃く）
+    // 1 - (offsetY / 60) で大きさを計算
+    const scale = 1 - (offsetY / 60);
+    shadowElement.style.transform = `scale(${scale})`;
+    shadowElement.style.opacity = 0.5 * scale;
+
+    // 次のフレームを予約
+    requestAnimationFrame(animateCharacter);
+}
+
+//アニメーション開始
+animateCharacter();
