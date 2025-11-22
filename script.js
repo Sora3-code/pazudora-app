@@ -228,7 +228,7 @@ function removeAndDropOrbs(matchedIndices) {
         let missingCount = ROWS - currentColumnOrbs.length;
 
         // 消した数 * 10 ポイント回復
-        updataHP(matchedIndices.size * 10);
+        updateHP(matchedIndices.size * 10);
         
         // 4. 足りない分だけ、新しいドロップをリストの「先頭（上）」に追加
         for (let i = 0; i < missingCount; i++) {
@@ -314,7 +314,7 @@ const hpBar = document.getElementById('hp-bar');
 const hpText = document.getElementById('hp-text');
 
 //HPを更新する関数（amount: 回復ならプラス、ダメージならマイナスの値）
-function updataHP(amount) {
+function updateHP(amount) {
     currentHP += amount;
 
     //最大・最小値の制限
@@ -339,7 +339,7 @@ function updataHP(amount) {
 }
 
 // テスト用: ゲーム開始時に少しHPを減らしておく
-updataHP(-800);
+updateHP(-800);
 
 // --- ドラゴンの攻撃制御 ---
 const dragonElement = document.getElementById('dragon');
@@ -354,7 +354,7 @@ dragonBtn.addEventListener('click', () => {
     // 四角いキャラにダメージを与える演出（HPを減らす）
     // ブレスが当たるタイミング（約0.8秒後）に合わせてHPを減らす
     setTimeout(() => {
-        updataHP(-300); // 300のダメージ
+        updateHP(-300); // 300のダメージ
 
         // 四角いキャラを揺らす（ダメージ演出）
         const charWrap = document.getElementById('char-wrapper');

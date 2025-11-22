@@ -195,7 +195,7 @@ body {
 
 /* --- アニメーションキーフレーム --- */
 /* 待機 */
-@keyframes idel {
+@keyframes idle {
     0%, 100% { transform: translateY(0) rotate(0deg); }
     50% { transform: translateY(-8px) rotate(3deg); }
 }
@@ -232,10 +232,10 @@ body {
 }
 
 /* クラス適用時の動き */
-.attaking .neck-group { animation: attack-neck 1.5s ease-in-out; }
-.attaking .jaw-part { animation: attack-jaw 1.5s ease-in-out; }
-.attaking .head-part { animation: attack-color 1.5s; }
-.attaking .breath-effect { animation: attack-breath 1.5s ease-out; }
+.attacking .neck-group { animation: attack-neck 1.5s ease-in-out; }
+.attacking .jaw-part { animation: attack-jaw 1.5s ease-in-out; }
+.attacking .head-part { animation: attack-color 1.5s; }
+.attacking .breath-effect { animation: attack-breath 1.5s ease-out; }
 
 /* 盤面 (6行5列) */
 #board {
