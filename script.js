@@ -340,3 +340,32 @@ function updataHP(amount) {
 
 // テスト用: ゲーム開始時に少しHPを減らしておく
 updataHP(-800);
+
+// --- ドラゴンの攻撃制御 ---
+const dragonElement = document.getElementById('dragon');
+const dragonBtn = document.getElementById('dragon-attack-btn');
+
+dragonBtn.addEventListener('click', () => {
+    if (dragonElement.classList.contains('attacking')) return;
+
+    // 攻撃モーション開始
+    dragonElement.classList.add('attacking');
+
+    // 四角いキャラにダメージを与える演出（HPを減らす）
+    // ブレスが当たるタイミング（約0.8秒後）に合わせてHPを減らす
+    setTimeout(() => {
+        updataHP(-300); // 300のダメージ
+
+        // 四角いキャラを揺らす（ダメージ演出）
+        const charWrap = document.getElementById('char-wrapper');
+        charWrap.style.transform = 'translateX(-10px)';
+        setTimeout(() => charWrap.style.transform = 'translateX(10px)', 50);
+        setTimeout(() => charWrap.style.transform = 'translateX(-10px)', 100);
+        setTimeout(() => charWrap.style.transform = 'translateY(0)', 150);
+    }, 800);
+
+    // モーション終了時にクラスを外す
+    setTimeout(() => {
+        dragonElement.classList.remove('attacking');
+    }, 1500);
+});

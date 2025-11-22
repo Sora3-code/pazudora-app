@@ -8,12 +8,29 @@
 </head>
 <body>
     <div id="scene">
-        <div id="character"></div>
-        <div id="shadow"></div>
-    
-        <div id="hp-container">
-            <div id="hp-bar"></div>
-            <div id="hp-text">HP: 1000 / 1000</div>
+        <div class="enemy-group" id="square-enemy">
+            <div id="char-wrapper">
+                <div id="character"></div>
+                <div id="shadow"></div>
+            </div>
+            <div id="hp-container">
+                <div id="hp-bar"></div>
+                <div id="hp-text">HP: 1000 / 1000</div>
+            </div>
+        </div>
+
+        <div class="enemy-group" id="dragon-enemy">
+            <div id="dragon">
+                <div class="body-part"></div>
+                <div class="neck-group">
+                    <div class="head-part">
+                        <div class="eye"></div>
+                        <div class="jaw-part"></div>
+                        <div class="breath-effect"></div>
+                    </div>
+                </div>
+            </div>
+            <button id="dragon-attack-btn">ブレス攻撃！</button>
         </div>
     </div>
 
