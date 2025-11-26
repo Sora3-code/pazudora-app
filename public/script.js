@@ -322,16 +322,16 @@ function updateHP(amount) {
     if (currentHP < 0) currentHP = 0;
 
     //バーの長さを更新（%）
-    const parcentage = (currentHP / maxHP) * 100;
-    hpBar.style.width = `${parcentage}%`;
+    const percentage = (currentHP / maxHP) * 100;
+    hpBar.style.width = `${percentage}%`;
 
     //テキスト更新
     hpText.textContent = `HP: ${currentHP} / ${maxHP}`;
 
     //色を変える演出（ピンチになったら赤くする）
-    if (parcentage <= 20) {
+    if (percentage <= 20) {
         hpBar.style.backgroundColor = '#ff1744'; // 赤
-    } else if (parcentage <= 50) {
+    } else if (percentage <= 50) {
         hpBar.style.backgroundColor = '#ffea00'; // 黄色
     } else {
         hpBar.style.backgroundColor = '#00e676'; // 緑
