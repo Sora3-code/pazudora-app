@@ -164,11 +164,20 @@ body {
     animation: idle 2s infinite ease-in-out;
 }
 
-.reg-right {
-    bottom: -300px;
-    right: 40px;
+.leg-right {
+    bottom: -22px;
+    right: 50px;
     width: 100px;
     z-index: 2;
+    animation: idle 2s infinite ease-in-out;
+}
+
+.leg-left {
+    bottom: -21px;
+    left: 45px;
+    width: 100px;
+    z-index: 2;
+    animation: idle 2s infinite ease-in-out;
 }
 
 /* ブレス */
