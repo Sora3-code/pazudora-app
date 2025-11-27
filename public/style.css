@@ -118,11 +118,13 @@ body {
 
 /* 体 */
 .body-part {
-    bottom: 0;
+    bottom: -20px;
     left: 50px;
     width: 100px;
     height: auto;
     z-index: 2;
+    position: absolute;
+    animation: idle 2s infinite ease-in-out; /* 待機モーション */
 }
 
 /* 首と頭のグループ */
@@ -139,33 +141,33 @@ body {
 /* 頭 */
 .head-part {
     position: absolute;
-    bottom: 0;
-    left: -40px;
+    bottom: -82px;
+    left: 0;
     width: 80px;
     height: auto;
     animation: idle 2s infinite ease-in-out; /* 待機モーション */
 }
 
 .arm-right {
-    top: 100px;
-    right: 20px;
-    width: 40px;
+    top: 55px;
+    right: 54px;
+    width: 100px;
     z-index: 1;
     animation: idle 2s infinite ease-in-out reverse; /* 逆位相で動かす */
 }
 
 .arm-left {
-    top: 100px;
-    left: 20px;
-    width: 40px;
+    top: 50px;
+    left: 50px;
+    width: 100px;
     z-index: 4;
     animation: idle 2s infinite ease-in-out;
 }
 
 .reg-right {
-    bottom: 0;
+    bottom: -300px;
     right: 40px;
-    width: 30px;
+    width: 100px;
     z-index: 2;
 }
 
