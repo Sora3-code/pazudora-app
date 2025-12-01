@@ -249,6 +249,35 @@ body {
 .attacking .head-part { animation: attack-color 1.5s; }
 .attacking .breath-effect { animation: attack-breath 1.5s ease-out; }
 
+/* 葉っぱ共通スタイル */
+.leaf {
+    position: fixed; /* 画面に対して固定 */
+    width: 30px; /* 葉っぱサイズ */
+    height: 30px;
+    background-image: url('images/leaf.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    z-index: 0; /* 最背面（背景の上、キャラの下） */
+    pointer-events: none; /* クリックを透過させる */
+    opacity: 0; /* 最初は隠しておく */
+}
+
+/* 右から左へ舞うアニメーション */
+@keyframes fall-wind {
+    0% {
+        opacity: 0;
+        transform: translate(110vw, -10vh) rotate(0deg); /* 画面右上の外側 */
+    }
+    10% {
+        opacity: 1; /* フェードイン */
+    }
+    100% {
+        opacity: 0; /* 消えながら */
+        /* 画面左下の方へ移動 + 回転 */
+        transform: translate(-20vw, 110vh) rotate(720deg);
+    }
+}
+
 /* 盤面 (6行5列) */
 #board {
     display: grid;

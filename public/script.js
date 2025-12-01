@@ -369,3 +369,35 @@ dragonBtn.addEventListener('click', () => {
         dragonElement.classList.remove('attacking');
     }, 1500);
 });
+
+// --- 落ち葉エフェクト生成システム ---
+function createLeaf() {
+    const leaf = document.createElement('div');
+    leaf.classList.add('leaf');
+
+    // 出現位置（縦）をランダムに（上半分から出やすくする）
+    // 0vh ~ 50vh の間のどこかからスタート
+    const startY = Math.random() * 50;
+    leaf.style.top = `${startY}vh`;
+
+    // 大きさをランダムに(0.5倍 ~ 1.2倍)
+    const scale = 0.5 + Math.random() * 0.7;
+    leaf.style.width = `${30 * scale}px`;
+    leaf.style.height = `${30 * scale}px`;
+
+    // 風の強さ（アニメーション時間）をランダムに
+    // 4秒 ~ 9秒の間で舞う
+    const duration = 4 + Math.random() * 5;
+    leaf.style.animation = `fall-wind ${duration}s linear`;
+
+    // HTML に追加
+    document.body.appendChild(leaf);
+
+    // アニメーションが終わったら消す（メモリ節約）
+    setTimeout(() => {
+        leaf.remove();
+    }, duration * 1000);
+}
+
+// 0.3秒ごとに葉っぱを一枚生成する
+setInterval(createLeaf, 300);
