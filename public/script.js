@@ -420,14 +420,12 @@ function createFireEffect() {
             break;
     }
 
-// 決定したタイプ別クラスを追加（これで画像が変わる）
-fire.classList.add(typeClass);
+    // 決定したタイプ別クラスを追加（これで画像が変わる）
+    fire.classList.add(typeClass);
 
-// 
+    // 決定した範囲内でランダムな角度を計算
+    const angle = minAngle + Math.random() * (maxAngle - minAngle);
 
-    // 0度（真上） ~ 90度（真右）の間でランダム
-    const angle = Math.random() * 90;
-    
     // 角度をラジアン単位に変換
     const radian = angle * (Math.PI / 180);
 
@@ -445,9 +443,8 @@ fire.classList.add(typeClass);
     fire.style.setProperty('--move-y', `${moveY}px`);
 
     // 大きさとスピードの設定(バラつきを出す)
-    const scale = 0.8 + Math.random() * 1.0; //大きさ
-    fire.style.width = `${60 * scale}px`;
-    fire.style.height = `${60 * scale}px`;
+    const scale = 0.9 + Math.random() * 0.4; //大きさ
+    fire.style.transform = `scale(${scale})`; // 初期スケールとして設定
 
     // 風の強さ（アニメーション時間）をランダムに
     // 4秒 ~ 9秒の間で舞う
