@@ -371,33 +371,97 @@ dragonBtn.addEventListener('click', () => {
 });
 
 // --- 落ち葉エフェクト生成システム ---
-function createLeaf() {
-    const leaf = document.createElement('div');
-    leaf.classList.add('leaf');
+function createFireEffect() {
+    const fire = document.createElement('div');
+    fire.classList.add('fire-effect');
 
-    // 出現位置（縦）をランダムに（上半分から出やすくする）
-    // 0vh ~ 50vh の間のどこかからスタート
-    const startY = Math.random() * 50;
-    leaf.style.top = `${startY}vh`;
+    // パズル盤面の位置情報を取得する
+    const board = document.getElementById('board');
+    if (!board) return; 
+    const rect = board.getBoundingClientRect();
 
-    // 大きさをランダムに(0.5倍 ~ 1.2倍)
-    const scale = 0.5 + Math.random() * 0.7;
-    leaf.style.width = `${30 * scale}px`;
-    leaf.style.height = `${30 * scale}px`;
+    // rect.left = ボードの左端の座標
+    // rect.bottom = ボードの下端の座標
+
+    // 出現位置（横）ボードの左端付近（少しランダムにずらす）
+    // rect.left から -20px ~ +30px の範囲
+    const startX = rect.left + (Math.random() * 50 - 20);
+    
+    // 出現位置（縦）ボード下端付近
+    // rect.bottom から-20px ~ +20px の範囲
+    const startY = rect.bottom + (Math.random() * 40 - 20);
+
+    // 計算した位置をセット
+    fire.style.left = `${startX}px`;
+    fire.style.top = `${startY}px`;
+
+    // タイプ（方向と画像）をランダムに決定
+    // 1 ~ 3のランダムな整数を生成
+    const fireType = Math.floor(Math.random() * 3) + 1;
+
+    let minAngle, maxAngle, typeClass;
+
+    // タイプに応じて設定を切り替え
+    switch (fireType) {
+        case 1: // 真上方向（0 ~ 30度）
+            minAngle = 0;
+            maxAngle = 30;
+            typeClass = 'fire-type-1'; // 真上用の画像クラス
+            break;
+        case 2: // 斜め方向（30 ~ 60度）
+            minAngle = 30;
+            maxAngle = 60;
+            typeClass = 'fire-type-2'; // 斜め用の画像クラス
+            break;
+        case 3: // 真右方向（60 ~ 90度）
+            minAngle = 60;
+            maxAngle = 90;
+            typeClass = 'fire-type-3'; // 真右用の画像クラス
+            break;
+    }
+
+// 決定したタイプ別クラスを追加（これで画像が変わる）
+fire.classList.add(typeClass);
+
+// 
+
+    // 0度（真上） ~ 90度（真右）の間でランダム
+    const angle = Math.random() * 90;
+    
+    // 角度をラジアン単位に変換
+    const radian = angle * (Math.PI / 180);
+
+    // 距離(勢い): 200px ~ 450px 飛んでいく
+    const distance = 200 + Math.random() * 250;
+
+    // 角度と距離から、移動先の X, Y 座標を計算
+    // Math.sin(横方向)、Math.cos(縦方向)
+    // 画面の座標は、上がマイナスなので、moveY にはマイナスをつける
+    const moveX = Math.sin(radian) * distance;
+    const moveY = -Math.cos(radian) * distance;
+
+    // css変数にセット
+    fire.style.setProperty('--move-x', `${moveX}px`);
+    fire.style.setProperty('--move-y', `${moveY}px`);
+
+    // 大きさとスピードの設定(バラつきを出す)
+    const scale = 0.8 + Math.random() * 1.0; //大きさ
+    fire.style.width = `${60 * scale}px`;
+    fire.style.height = `${60 * scale}px`;
 
     // 風の強さ（アニメーション時間）をランダムに
     // 4秒 ~ 9秒の間で舞う
-    const duration = 4 + Math.random() * 5;
-    leaf.style.animation = `fall-wind ${duration}s linear`;
+    const duration = 1.5 + Math.random() * 2.0;
+    fire.style.animation = `rise-fire ${duration}s ease-out`;
 
     // HTML に追加
-    document.body.appendChild(leaf);
+    document.body.appendChild(fire);
 
     // アニメーションが終わったら消す（メモリ節約）
     setTimeout(() => {
-        leaf.remove();
+        fire.remove();
     }, duration * 1000);
 }
 
 // 0.3秒ごとに葉っぱを一枚生成する
-setInterval(createLeaf, 300);
+setInterval(createFireEffect, 400);
