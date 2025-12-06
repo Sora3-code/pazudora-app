@@ -383,13 +383,23 @@ function createFireEffect() {
     // rect.left = ボードの左端の座標
     // rect.bottom = ボードの下端の座標
 
-    // 出現位置（横）ボードの左端付近（少しランダムにずらす）
-    // rect.left から -20px ~ +30px の範囲
-    const startX = rect.left + (Math.random() * 50 - 20);
-    
-    // 出現位置（縦）ボード下端付近
-    // rect.bottom から-20px ~ +20px の範囲
-    const startY = rect.bottom + (Math.random() * 40 - 20);
+    // 炎が出る場所リスト
+    // x: 右へずらす距離（マイナスなら左へ）
+    // y: 下へずらす距離（マイナスなら上へ）boardの下端が基準
+    const spawnPoints = [
+        { x: -20, y: -20 }, // 左下
+        { x: -40, y: -150 }, //左中段
+        { x: 10, y: -100 }, // 左の内側
+        { x: 200, y: -10 }, // 右足元付近
+        { x: 220, y: -120 } // 右手付近
+    ];
+
+    // リストの中からサイコロを振って1つの場所を選ぶ
+    const randomPoint = spawnPoints[Math.floor(Math.random() * spawnPoints.length)];
+
+    // 選ばれた場所に、少しだけランダムなズレ（+-10）を足す
+    const startX = rect.left + randomPoint.x + (Math.random() * 20 -10);
+    const startY = rect.bottom + randomPoint.y + (Math.random() * 20 - 10);
 
     // 計算した位置をセット
     fire.style.left = `${startX}px`;
@@ -448,7 +458,7 @@ function createFireEffect() {
 
     // 風の強さ（アニメーション時間）をランダムに
     // 4秒 ~ 9秒の間で舞う
-    const duration = 1.5 + Math.random() * 2.0;
+    const duration = 6.0 + Math.random() * 4.0;
     fire.style.animation = `rise-fire ${duration}s ease-out`;
 
     // HTML に追加
