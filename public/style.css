@@ -252,8 +252,8 @@ body {
 /* 葉っぱ共通スタイル */
 .fire-effect {
     position: fixed; /* 画面に対して固定 */
-    width: 60px; /* 葉っぱサイズ */
-    height: 60px;
+    width: 200px; /* 葉っぱサイズ */
+    height: 200px;
     background-size: contain;
     background-repeat: no-repeat;
     z-index: 50; /* 最背面（背景の上、キャラの下） */
@@ -270,7 +270,7 @@ body {
 /* 真上用（0 ~ 30度）*/
 .fire-type-1 {
     background-image: url(images/fire_light.png);
-    width: 50px;
+    width: 70px;
     height: 70px;
 }
 
@@ -283,7 +283,7 @@ body {
 .fire-type-3 {
     background-image: url(images/fire_light.png);
     width: 70px;
-    height: 50px;
+    height: 70px;
 }
 
 /* その場(0, 0)から、右上へ飛んでいくアニメーション */
@@ -296,7 +296,7 @@ body {
         filter: brightness(1) drop-shadow(0 0 0 rgba(255, 50, 0, 0));
     }
     /* 発生してすぐに、強く発光 */
-    20% {
+    10% {
         opacity: 1; /* フェードイン */
         /* brightness(2)で画像を激しく明るくして、drop-shadowで周りを明るく光らせる */
         filter: brightness(2.5) drop-shadow(0 0 15px rgba(255, 200, 50, 1.0));

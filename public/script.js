@@ -34,6 +34,7 @@ let draggedIndex = -1;
 let floatingOrb = null;
 let orbSize = 0;
 let originalOrbElement = null;
+let isProcessing = false;
 
 // --- イベントリスナー設定 ---
 board.addEventListener('mousedown', handleStart);
@@ -48,6 +49,7 @@ window.addEventListener('touchend', handleEnd);
 
 // 1. 操作開始
 function handleStart(e) {
+    if (isProcessing) return;
     const event = e.type === 'touchstart' ? e.touches[0] : e;
     const target = document.elementFromPoint(event.clientX, event.clientY);
 
@@ -254,9 +256,12 @@ function checkAndProcessChain() {
     // 2. 揃っている場所がなければ終了（連鎖ストップ）
     if (matches.size === 0) {
         console.log("連鎖終了");
-        // isProcessing = false; // もし操作ロックするならここで解除
+        
+        isProcessing = false; // もし操作ロックするならここで解除
         return;
     }
+
+    isProcessing = true;
 
     console.log("コンボ発生！数:", matches.size);
 
@@ -459,7 +464,7 @@ function createFireEffect() {
     // 風の強さ（アニメーション時間）をランダムに
     // 4秒 ~ 9秒の間で舞う
     const duration = 6.0 + Math.random() * 4.0;
-    fire.style.animation = `rise-fire ${duration}s ease-out`;
+    fire.style.animation = `rise-fire ${duration}s ease-in-out`;
 
     // HTML に追加
     document.body.appendChild(fire);
