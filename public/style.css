@@ -260,7 +260,7 @@ body {
     pointer-events: none; /* クリックを透過させる */
     opacity: 0; /* 最初は隠しておく */
     mix-blend-mode: screen; /* 光が重なって明るく見える */
-    filter: drop-shadow(0 0 5px rgba(255, 100, 0, 0.8)); /* 少しぼかしを入れて光らせる */
+    will-change: transform, opacity, filter;
     /* 変数の初期値をセット */
     --move-x: 200px;
     --move-y: -400px;
@@ -290,15 +290,28 @@ body {
 @keyframes rise-fire {
     0% {
         opacity: 0;
-        transform: translate(0, 0) scale(0.5) rotate(0deg); /* 画面右上の外側 */
+        /* 最初は小さく、回転なし */
+        transform: translate(0, 0) scale(0.3) rotate(0deg);
+        /* まだ光ってない */
+        filter: brightness(1) drop-shadow(0 0 0 rgba(255, 50, 0, 0));
     }
-    15% {
+    /* 発生してすぐに、強く発光 */
+    20% {
         opacity: 1; /* フェードイン */
+        /* brightness(2)で画像を激しく明るくして、drop-shadowで周りを明るく光らせる */
+        filter: brightness(2.5) drop-shadow(0 0 15px rgba(255, 200, 50, 1.0));
     }
+    /* 移動しながら、光だけが落ち着く（発光しなくなる） */
+    60% {
+        opacity: 0.8; /* まだ画像は見えている */
+        /* 明るさを元に戻し、光を弱める */
+        filter: brightness(1.0) drop-shadow(0 0 5px rgba(255, 50, 0, 0.3));
+    }
+    /* 最後にフッと消える */
     100% {
         opacity: 0; /* 消えながら */
-        /* 右へ250px、上へ400px、移動する */
         transform: translate(var(--move-x), var(--move-y)) scale(1.5) rotate(180deg);
+        filter: brightness(0.5) drop-shadow(0 0 0 rgba(0, 0, 0, 0));
     }
 }
 
