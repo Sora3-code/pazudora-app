@@ -13,6 +13,60 @@ body {
     overflow: hidden;
 }
 
+/* --- 起動時のsplash-screen --- */
+#splash-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: white;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* 背景が消えるアニメーション */
+    animation: fade-out-bg 0.5s ease-out 6.5s forwards;
+    pointer-events: none;
+}
+
+/* 二つの画像をまとめる箱 */
+#splash-content {
+    display: flex;
+    flex-direction: column; /* 縦に並べる */
+    align-items: center; /* 真ん中に揃える */
+    gap: 10px;  /* マークと文字の間隔 */
+    /* 箱ごとアニメーションさせる */
+    opacity: 0;
+    animation: logo-fade-sequence 6s ease-in-out forwards;
+}
+
+/* 紫のマークのサイズ調整 */
+#splash-mark {
+    width: 170px;
+    height: auto;
+    margin-bottom: -210px;
+}
+
+/* 文字ロゴのサイズ調整 */
+#splash-text {
+    width: 150px;
+    height: auto;
+    margin-top: -70px;
+}
+
+/* --- アニメーションの定義 --- */
+@keyframes logo-fade-sequence {
+    0% { opacity: 0; transform: scale(0.9); }
+    30% { opacity: 1; transform: scale(1); }
+    70% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+@keyframes fade-out-bg {
+    to { opacity: 0; visibility: hidden; }
+}
+
 /* --- 新規・キャラクター表示エリア --- */
 #scene {
     position: relative;

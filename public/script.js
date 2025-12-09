@@ -375,7 +375,10 @@ dragonBtn.addEventListener('click', () => {
     }, 1500);
 });
 
-// --- 落ち葉エフェクト生成システム ---
+// --- エキドナの炎:パーティクルシステム ---
+// 今の状態を管理する変数（最初は 'nomal'）
+let fireMode = 'nomal';
+// 炎の生成関数
 function createFireEffect() {
     const fire = document.createElement('div');
     fire.classList.add('fire-effect');
@@ -385,95 +388,141 @@ function createFireEffect() {
     if (!board) return; 
     const rect = board.getBoundingClientRect();
 
-    // rect.left = ボードの左端の座標
-    // rect.bottom = ボードの下端の座標
+    // --- モードによって出現位置を変える ---
+    let startX, startY;
 
-    // 炎が出る場所リスト
-    // x: 右へずらす距離（マイナスなら左へ）
-    // y: 下へずらす距離（マイナスなら上へ）boardの下端が基準
-    const spawnPoints = [
-        { x: -20, y: -20 }, // 左下
-        { x: -40, y: -150 }, //左中段
-        { x: 10, y: -100 }, // 左の内側
-        { x: 200, y: -10 }, // 右足元付近
-        { x: 220, y: -120 } // 右手付近
-    ];
+    if (fireMode === 'nomal') {
+        // 【通常モード】あちこちの定点から淡々と出る
+        const spawnPoints = [
+            { x: -20, y: -20 },   //左下
+            { x: -40, y: -150 },  //左中
+            { x: 10, y: -100 },   //左奥
+            { x: 200, y: -10 }    //右下
+            // * 右手（220, -120）は通常時は出さないでおく
+        ];
+        const randomPoint = spawnPoints[Math.floor(Math.random() * spawnPoints.length)];
+        startX = rect.left + randomPoint.x + (Math.random() * 10 - 5); //ズレも少なめ
+        startY = rect.bottom + randomPoint.y + (Math.random() * 10 - 5);
 
-    // リストの中からサイコロを振って1つの場所を選ぶ
-    const randomPoint = spawnPoints[Math.floor(Math.random() * spawnPoints.length)];
+        // 動き:ゆったり
+        fire.style.animation = `rise-fire 4s ease-in-out`;
 
-    // 選ばれた場所に、少しだけランダムなズレ（+-10）を足す
-    const startX = rect.left + randomPoint.x + (Math.random() * 20 -10);
-    const startY = rect.bottom + randomPoint.y + (Math.random() * 20 - 10);
+    } else if (fireMode === 'charge') {
+        // 【溜めモード】右腕の一点に集中する
+        // 腕の座標（絵に合わせて調整）
+        const armX = 220;
+        const armY = -120;
 
-    // 計算した位置をセット
+        startX = rect.left + armX + (Math.random() * 10 - 5);
+        startY = rect.bottom + armY + (Math.random() * 10 - 5);
+
+        // 動き:吸い込まれるように早く消える
+        // *cssのアニメーション時間を短く上書き
+        fire.style.animation = `rise-fire 1.5s ease-out`;
+        fire.style.transform = `scale(0.5)`; //少し小さく
+    }
+
+    // 座標セット
     fire.style.left = `${startX}px`;
     fire.style.top = `${startY}px`;
 
-    // タイプ（方向と画像）をランダムに決定
-    // 1 ~ 3のランダムな整数を生成
+    // 画像タイプ決定
     const fireType = Math.floor(Math.random() * 3) + 1;
+    let typeClass = `fire-type-${fireType}`;
+    fire.classList.add('typeClass');
 
-    let minAngle, maxAngle, typeClass;
+    // 移動先の計算
+    // 溜めモードの時はあまり遠くへ飛ばない（その場で燃える感じ）
+    let distance = (fireMode === 'charge') ? 50 : (150 + Math.random() * 200);
 
-    // タイプに応じて設定を切り替え
-    switch (fireType) {
-        case 1: // 真上方向（0 ~ 30度）
-            minAngle = 0;
-            maxAngle = 30;
-            typeClass = 'fire-type-1'; // 真上用の画像クラス
-            break;
-        case 2: // 斜め方向（30 ~ 60度）
-            minAngle = 30;
-            maxAngle = 60;
-            typeClass = 'fire-type-2'; // 斜め用の画像クラス
-            break;
-        case 3: // 真右方向（60 ~ 90度）
-            minAngle = 60;
-            maxAngle = 90;
-            typeClass = 'fire-type-3'; // 真右用の画像クラス
-            break;
-    }
+    // 角度
+    let angle = Math.random() * 90; // 0 ~ 90度
+    if (fireMode === 'charge') angle = Math.random() * 360; // 溜め時は全方向にゆらめく
 
-    // 決定したタイプ別クラスを追加（これで画像が変わる）
-    fire.classList.add(typeClass);
-
-    // 決定した範囲内でランダムな角度を計算
-    const angle = minAngle + Math.random() * (maxAngle - minAngle);
-
-    // 角度をラジアン単位に変換
     const radian = angle * (Math.PI / 180);
-
-    // 距離(勢い): 200px ~ 450px 飛んでいく
-    const distance = 200 + Math.random() * 250;
-
-    // 角度と距離から、移動先の X, Y 座標を計算
-    // Math.sin(横方向)、Math.cos(縦方向)
-    // 画面の座標は、上がマイナスなので、moveY にはマイナスをつける
     const moveX = Math.sin(radian) * distance;
     const moveY = -Math.cos(radian) * distance;
 
-    // css変数にセット
     fire.style.setProperty('--move-x', `${moveX}px`);
     fire.style.setProperty('--move-y', `${moveY}px`);
 
-    // 大きさとスピードの設定(バラつきを出す)
-    const scale = 0.9 + Math.random() * 0.4; //大きさ
-    fire.style.transform = `scale(${scale})`; // 初期スケールとして設定
-
-    // 風の強さ（アニメーション時間）をランダムに
-    // 4秒 ~ 9秒の間で舞う
-    const duration = 6.0 + Math.random() * 4.0;
+    // アニメーション時間（モードで変える）
+    let duration = (fireMode === 'charge') ? 1.5 : (3.0 + Math.random() * 2.0);
     fire.style.animation = `rise-fire ${duration}s ease-in-out`;
 
-    // HTML に追加
     document.body.appendChild(fire);
-
-    // アニメーションが終わったら消す（メモリ節約）
-    setTimeout(() => {
-        fire.remove();
-    }, duration * 1000);
+    setTimeout(() => fire.remove(), duration * 1000);
 }
 
-// 0.3秒ごとに葉っぱを一枚生成する
+// 炎生成ループ（0.4秒ごとに１つ）
 setInterval(createFireEffect, 400);
+
+// --- 監督役:シナリオ進行システム ---
+function startEkidonaRoutine() {
+    // 最初は、通常モード
+    console.log('モード:通常（淡々と）');
+    fireMode = 'nomal';
+
+    // 2.5秒後に、溜めモードへ移行
+    setTimeout(() => {
+        console.log('モード:溜め（腕に集約）');
+        fireMode = 'charge';
+
+        // 溜め中は、炎の生成頻度を上げて「激しく」する演出
+        // (setIntervalとは別に、追加で炎を出す)
+        const chargeInterval = setInterval(createFireEffect, 100);
+
+        // さらに3秒後（合計8秒後）に「開放（バースト）」
+        setTimeout(() => {
+            console.log('モード:開放');
+            clearInterval(chargeInterval); // 激しい生成を止める
+            triggerBurst(); // 円状に爆発させる関数を実行
+
+            // すぐにまた「通常モード」に戻ってループ再開
+            startEkidonaRoutine();
+        }, 3000); // 溜め時間3秒
+    }, 5000); // 通常時間5秒
+}
+
+// --- 円状に一気に炎を出す関数 ---
+function triggerBurst() {
+    const board = document.getElementById('board');
+    if (!board) return;
+    const rect = board.getBoundingClientRect();
+
+    // 腕の中心の座標
+    const armX = rect.left + 220;
+    const armY = rect.bottom -120;
+
+    // 20個の炎を一気に円状に飛ばす
+    for (let i = 0; i < 20; i++) {
+        const fire = document.createElement('div');
+        fire.classList.add('fire-effect');
+        fire.classList.add('fire-type-1');
+
+        // 出現位置は腕の中心
+        fire.style.left = `${armX}px`;
+        fire.style.top = `${armY}px`;
+
+        // ３６０度均等に広げる
+        const angle = (360 / 20) * i;
+        const radian = angle * (Math.PI / 180);
+        const distance = 300; // 遠くまで飛ばす
+
+        const moveX = Math.cos(radian) * distance;
+        const moveY = Math.sin(radian) * distance;
+
+        fire.style.setProperty('--move-x', `${moveX}px`);
+        fire.style.setProperty('--movve-y', `${moveY}px`);
+
+        // バースト用の速いアニメーション
+        fire.style.animation = `rise-fire 1.0s ease-out`;
+        fire.style.transform = `scale(2.0)`; // 大きく
+
+        document.body.appendChild(fire);
+        setTimeout(() => fire.remove(), 1000);
+    }
+}
+
+// ゲーム開始と同時に、エキドナのルーチンも開始
+startEkidonaRoutine();
