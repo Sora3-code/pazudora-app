@@ -14,37 +14,43 @@
         </div>
     </div>
 
-    <div id="scene">
-        <div class="enemy-group" id="square-enemy">
-            <div id="char-wrapper">
-                <div id="character"></div>
-                <div id="shadow"></div>
-            </div>
-            <div id="hp-container">
-                <div id="hp-bar"></div>
-                <div id="hp-text">HP: 1000 / 1000</div>
-            </div>
-        </div>
-
-        <div class="enemy-group" id="dragon-enemy">
-            <div id="dragon">
-                <img src="images/body.png" alt="" class="body-part">
-                <img src="images/armRight.png" alt="" class="arm-right">
-                <img src="images/armLeft.png" alt="" class="arm-left">
-                <img src="images/legRight.png" alt="" class="leg-right">
-                <img src="images/legLeft.png" alt="" class="leg-left">
-                <div class="neck-group">
-                    <img src="images/face.png" class="head-part">
-
-                    <div class="breath-effect"></div>
-                </div>
-            </div>
-            <button id="dragon-attack-btn">ブレス攻撃！</button>
-        </div>
+    <div id="start-screen">
+        <div id="title-text">HAYADORA<br>TEST</div>
+        <button id="start-btn">START</button>
     </div>
 
-    <div id="board"></div>
+    <div id="game-container" style="display: none;">
+        <div id="scene">
+            <div class="enemy-group" id="square-enemy">
+                <div id="char-wrapper">
+                    <div id="character"></div>
+                    <div id="shadow"></div>
+                </div>
+                <div id="hp-container">
+                    <div id="hp-bar"></div>
+                    <div id="hp-text">HP: 1000 / 1000</div>
+                </div>
+            </div>
 
+            <div class="enemy-group" id="dragon-enemy">
+                <div id="dragon">
+                    <img src="images/body.png" alt="" class="body-part">
+                    <img src="images/armRight.png" alt="" class="arm-right">
+                    <img src="images/armLeft.png" alt="" class="arm-left">
+                    <img src="images/legRight.png" alt="" class="leg-right">
+                    <img src="images/legLeft.png" alt="" class="leg-left">
+                    <div class="neck-group">
+                        <img src="images/face.png" class="head-part">
+
+                        <div class="breath-effect"></div>
+                    </div>
+                </div>
+                <button id="dragon-attack-btn">ブレス攻撃！</button>
+            </div>
+        </div>
+
+        <div id="board"></div>
+    </div>
 <script src="script.js"></script>
 </body>
 </html>

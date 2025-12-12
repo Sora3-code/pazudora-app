@@ -67,6 +67,71 @@ body {
     to { opacity: 0; visibility: hidden; }
 }
 
+/* --- スタート画面のスタイル --- */
+#start-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.85); /* 少し透けた黒背景 */
+    z-index: 8000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    color: white;
+}
+
+/* タイトル文字 */
+#title-text {
+    font-size: 40px;
+    font-weight: bold;
+    text-align: center;
+    text-shadow: 0 0 10px #4db6ac;
+    letter-spacing: 5px;
+}
+
+/* スタートボタン */
+#start-btn {
+    padding: 15px 40px;
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    background: linear-gradient(45deg, #ff6b6b, #ff8e53);
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    box-shadow: 0 0 20px rgba(255, 107, 107, 0.6);
+    transition: transform 0.1s, box-shadow 0.1s;
+    /* ボタンをドキドキさせるアニメーション */
+    animation: pulse-btn 1.5s infinite;
+}
+
+#start-btn:active {
+    transform: scale(0.95);
+    box-shadow: 0 0 10px rgba(255, 107, 107, 0.8);
+}
+
+@keyframes pulse-btn {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.5); }
+    100% { transform: scale(1); }
+}
+
+/* ゲーム全体を包む箱（最初は透明） */
+#game-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 1s,; /* フワッと表示 */
+}
+
 /* --- 新規・キャラクター表示エリア --- */
 #scene {
     position: relative;

@@ -281,9 +281,6 @@ function checkAndProcessChain() {
     }, 500); // 光っている時間分待つ
 }
 
-
-initGame();
-
 // --- ふわふわアニメーションの処理 --- 
 const characterElement = document.getElementById('character');
 const shadowElement = document.getElementById('shadow');
@@ -377,7 +374,7 @@ dragonBtn.addEventListener('click', () => {
 
 // --- エキドナの炎:パーティクルシステム ---
 // 今の状態を管理する変数（最初は 'nomal'）
-let fireMode = 'nomal';
+let fireMode = 'normal';
 // 炎の生成関数
 function createFireEffect() {
     const fire = document.createElement('div');
@@ -391,7 +388,7 @@ function createFireEffect() {
     // --- モードによって出現位置を変える ---
     let startX, startY;
 
-    if (fireMode === 'nomal') {
+    if (fireMode === 'normal') {
         // 【通常モード】あちこちの定点から淡々と出る
         const spawnPoints = [
             { x: -20, y: -20 },   //左下
@@ -429,7 +426,7 @@ function createFireEffect() {
     // 画像タイプ決定
     const fireType = Math.floor(Math.random() * 3) + 1;
     let typeClass = `fire-type-${fireType}`;
-    fire.classList.add('typeClass');
+    fire.classList.add(typeClass);
 
     // 移動先の計算
     // 溜めモードの時はあまり遠くへ飛ばない（その場で燃える感じ）
@@ -461,7 +458,7 @@ setInterval(createFireEffect, 400);
 function startEkidonaRoutine() {
     // 最初は、通常モード
     console.log('モード:通常（淡々と）');
-    fireMode = 'nomal';
+    fireMode = 'normal';
 
     // 2.5秒後に、溜めモードへ移行
     setTimeout(() => {
@@ -513,7 +510,7 @@ function triggerBurst() {
         const moveY = Math.sin(radian) * distance;
 
         fire.style.setProperty('--move-x', `${moveX}px`);
-        fire.style.setProperty('--movve-y', `${moveY}px`);
+        fire.style.setProperty('--move-y', `${moveY}px`);
 
         // バースト用の速いアニメーション
         fire.style.animation = `rise-fire 1.0s ease-out`;
@@ -524,5 +521,26 @@ function triggerBurst() {
     }
 }
 
-// ゲーム開始と同時に、エキドナのルーチンも開始
-startEkidonaRoutine();
+// ゲーム開始処理を関数にまとめる
+function startGame() {
+    // スタート画面を隠す
+    const startScreen = document.getElementById('start-screen');
+    startScreen.style.display = 'none';
+
+    // ゲーム画面を表示する（フワッと）
+    const gameContainer = document.getElementById('game-container');
+    gameContainer.style.display = 'flex'; // 箱を表示
+
+    // 少し待ってから不透明にする（cssのtransitionを効かせるため）
+    setTimeout(() => {
+        gameContainer.style.opacity = '1';
+    }, 10);
+
+    // ここで初めてゲームのロジックを動かす
+    initGame(); // パズル生成
+    startEkidonaRoutine(); // エキドナの動き開始
+};
+
+// スタートボタンにクリックイベントを設定
+const startBtn = document.getElementById('start-btn');
+startBtn.addEventListener('click', startGame);
