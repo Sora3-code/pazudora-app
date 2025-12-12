@@ -132,6 +132,105 @@ body {
     transition: opacity 1s,; /* フワッと表示 */
 }
 
+/* --- ユーザー選択画面 --- */
+#user-select-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.9); /* 背景は少し暗く */
+    z-index: 7000; /* タイトルより下、ゲームより上 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    font-family: sans-serif;
+}
+
+/* どのデータで遊びますか？、の帯 */
+.select-header {
+    background-color: #444;
+    color: white;
+    padding: 5px 20px;
+    border-radius: 15px;
+    font-size: 14px;
+    margin-bottom: 10px;
+    border: 1px solid #666;
+}
+
+/* ユーザーカード（白いボタン） */
+.user-card {
+    width: 80%;
+    max-width: 350px;
+    background-color: white;
+    border-radius: 8px;
+    padding: 10px 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+    transition: transform 0.1s, background-color 0.2s;
+    color: #333;
+}
+
+.user-card:active {
+    transform: scale(0.98);
+    background-color: #f0f0f0;
+}
+
+/* 左側:名前と日付 */
+.user-info-left {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.user-name {
+    font-size: 18px;
+    font-weight: bold;
+}
+.last-login {
+    font-size: 12px;
+    color: #888;
+}
+
+/* 右側:ランクと石 */
+.user-info-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+}
+
+/* ランクバッジ（）赤い角丸 */
+.rank-badge {
+    background-color: #d32f2f;
+    color: white;
+    font-size: 12px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: bold;
+}
+.rank-badge span {
+    font-size: 14px;
+}
+
+.magic-stone {
+    font-size: 12px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* 新しく始めるボタン用 */
+.user-name-center {
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+    color: #555;
+}
+
 /* --- 新規・キャラクター表示エリア --- */
 #scene {
     position: relative;

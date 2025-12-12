@@ -521,26 +521,47 @@ function triggerBurst() {
     }
 }
 
-// ゲーム開始処理を関数にまとめる
-function startGame() {
-    // スタート画面を隠す
+// タイトル画面のボタンを押したときの処理
+// ユーザー選択画面へ移動
+function toUserSelect() {
+    // タイトル画面を消す
     const startScreen = document.getElementById('start-screen');
     startScreen.style.display = 'none';
 
-    // ゲーム画面を表示する（フワッと）
-    const gameContainer = document.getElementById('game-container');
-    gameContainer.style.display = 'flex'; // 箱を表示
+    // ユーザー選択画面を表示
+    const userSelectScreen = document.getElementById('user-select-screen');
+    userSelectScreen.style.display = 'flex';
+}
 
-    // 少し待ってから不透明にする（cssのtransitionを効かせるため）
+// ユーザーカードを押したときの処理
+function startGame() {
+    // ユーザー選択画面を消す
+    const userSelectScreen = document.getElementById('user-select-screen');
+    userSelectScreen.style.display = 'none';
+
+    // ゲーム画面を表示
+    const gameContainer = document.getElementById('game-container');
+    gameContainer.style.display = 'flex';
+
+    // フェードイン
     setTimeout(() => {
         gameContainer.style.opacity = '1';
     }, 10);
 
-    // ここで初めてゲームのロジックを動かす
-    initGame(); // パズル生成
-    startEkidonaRoutine(); // エキドナの動き開始
-};
+    // ゲームロジック開始
+    initGame();
+    startEkidonaRoutine();
+}
 
-// スタートボタンにクリックイベントを設定
+// --- イベントリスナーの登録 ---
+// タイトル画面の「start」ボタン
 const startBtn = document.getElementById('start-btn');
-startBtn.addEventListener('click', startGame);
+startBtn.addEventListener('click', toUserSelect);
+
+// ユーザー選択画面の「sora」カード
+const userCard = document.getElementById('user-1');
+userCard.addEventListener('click', startGame);
+
+// 「新しく始める」ボタン（）今回は同じ動き
+const newGameCard = document.getElementById('user-new');
+newGameCard.addEventListener('click', startGame);
