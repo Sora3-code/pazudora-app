@@ -562,3 +562,29 @@ function toQuestScreen() {
 }
 
 // クエスト選択 → パズル開始
+function startPuzzle() {
+    document.getElementById('quest-screen').style.display = 'none';
+
+    const gameContainer = document.getElementById('game-container');
+    gameContainer.style.display = 'flex';
+    setTimeout(() => {
+        gameContainer.style.opacity = '1'
+    }, 10);
+
+    initGame();
+    startEkidonaRoutine();
+}
+
+// イベントリスナーの登録
+
+// タイトル画面
+const startBtn = document.getElementById('start-btn');
+startBtn.addEventListener('click', toUserSelect);
+
+// ユーザー選択（soraを押したらロード開始）
+const userCard = document.getElementById('user-1');
+userCard.addEventListener('click', startLoding);
+
+// 新しく始める（同じくロード開始）
+const newGameCard = document.getElementById('user-new');
+newGameCard.addEventListener('click', startLoding);
