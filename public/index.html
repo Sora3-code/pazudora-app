@@ -36,6 +36,41 @@
         </div>
     </div>
 
+    <div id="loading-screen" style="display: none;">
+        <div id="loading-container">
+            <div id="loading-text">Loading... <span id="loading-percent">0%</span></div>
+            <div id="loading-bar-bg">
+                <div id="loading-bar"></div>
+                <div id="loading-orb"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="quest-screen" style="display: none;">
+        <div class="quest-header">ノーマルダンジョン</div>
+        <div id="quest-map">
+            <div class="quest-node" onclick="startPuzzle()" style="bottom: 10%; left: 50%;">1<div class="node-label">旅だちの塔</div></div>
+            <div class="quest-node" onclick="startPuzzle()" style="bottom: 22%; left: 70%;">2<div class="node-label">火のダンジョン</div></div>
+            <div class="quest-node" onclick="startPuzzle()" style="bottom: 34%; left: 50%;">3<div class="node-label">水のダンジョン</div></div>
+            <div class="quest-node" onclick="startPuzzle()" style="bottom: 46%; left: 30%;">4<div class="node-label">木のダンジョン</div></div>
+            <div class="quest-node" onclick="startPuzzle()" style="bottom: 58%; left: 50%;">5<div class="node-label">光のダンジョン</div></div>
+            <div class="quest-node" onclick="startPuzzle()" style="bottom: 70%; left: 70%;">6<div class="node-label">闇のダンジョン</div></div>
+            <div class="quest-node" onclick="startPuzzle()" style="bottom: 85%; left: 50%;">7<div class="node-label">試練の塔</div></div>
+
+            <svg class="quest-path">
+                <path d="M50,85,L70,70,L50,58,L30,46,L50,34,L70,22,L50,10" fill="none" stroke="white" stroke-width="2" stroke-dasharray="5,5"/>
+            </svg>
+        </div>
+
+        <div class="bottom-menu">
+            <div>ダンジョン</div>
+            <div>モンスター</div>
+            <div>ショップ</div>
+            <div>ガチャ</div>
+            <div>その他</div>
+        </div>
+    </div>
+
     <div id="game-container" style="display: none;">
         <div id="scene">
             <div class="enemy-group" id="square-enemy">

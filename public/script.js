@@ -521,47 +521,44 @@ function triggerBurst() {
     }
 }
 
-// タイトル画面のボタンを押したときの処理
-// ユーザー選択画面へ移動
+// タイトル画面のボタン → ユーザー選択へ
 function toUserSelect() {
-    // タイトル画面を消す
-    const startScreen = document.getElementById('start-screen');
-    startScreen.style.display = 'none';
-
-    // ユーザー選択画面を表示
-    const userSelectScreen = document.getElementById('user-select-screen');
-    userSelectScreen.style.display = 'flex';
+    document.getElementById('start-screen').style.display = 'none';
+    document.getElementById('user-select-screen').style.display = 'flex';
 }
 
-// ユーザーカードを押したときの処理
-function startGame() {
-    // ユーザー選択画面を消す
-    const userSelectScreen = document.getElementById('user-select-screen');
-    userSelectScreen.style.display = 'none';
+// ユーザーを選択 → ロード画面へ
+function startLoding() {
+    document.getElementById('user-select-screen').style.display = 'none';
+    const loadingScreen = document.getElementById('loading-screen');
+    loadingScreen.style.display = 'flex';
 
-    // ゲーム画面を表示
-    const gameContainer = document.getElementById('game-container');
-    gameContainer.style.display = 'flex';
+    // ロードのアニメーション（0% ~ 100%）
+    let percent = 0;
+    const bar = document.getElementById('loading-bar');
+    const orb = document.getElementById('loading-orb');
+    const text = document.getElementById('loading-percent');
 
-    // フェードイン
-    setTimeout(() => {
-        gameContainer.style.opacity = '1';
-    }, 10);
+    const interval =setInterval(() => {
+        percent += 2; // スピード調整
+        if (percent > 100) percent = 100;
 
-    // ゲームロジック開始
-    initGame();
-    startEkidonaRoutine();
+        bar.style.width = `${percent}%`;
+        orb.style.left = `${percent}%`;
+        text.textContent = `${percent}%`;
+
+        if (percent === 100) {
+            clearInterval(interval);
+            // 完了したら少し待ってクエスト画面へ
+            setTimeout(toQuestScreen, 500);
+        }
+    }, 30); // 更新頻度
 }
 
-// --- イベントリスナーの登録 ---
-// タイトル画面の「start」ボタン
-const startBtn = document.getElementById('start-btn');
-startBtn.addEventListener('click', toUserSelect);
+// ロード完了 → クエスト選択画面へ
+function toQuestScreen() {
+    document.getElementById('loading-screen').style.display = 'none';
+    document.getElementById('quest-screen').style.display = 'flex';
+}
 
-// ユーザー選択画面の「sora」カード
-const userCard = document.getElementById('user-1');
-userCard.addEventListener('click', startGame);
-
-// 「新しく始める」ボタン（）今回は同じ動き
-const newGameCard = document.getElementById('user-new');
-newGameCard.addEventListener('click', startGame);
+// クエスト選択 → パズル開始
